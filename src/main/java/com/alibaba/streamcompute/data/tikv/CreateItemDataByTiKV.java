@@ -8,7 +8,7 @@ import java.util.*;
 
 public class CreateItemDataByTiKV {
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) throws Exception {
 
     List<String> item_features = new ArrayList<>();
     item_features.add("item_id");
@@ -31,7 +31,7 @@ public class CreateItemDataByTiKV {
     generate(200);
   }
   // 创建一个item表，该表是由一个"cf"列族，以及由15个特征作为列来形成的，generate方法会向该表插入200条记录
-  public static void generate(int num) throws IOException {
+  public static void generate(int num) throws Exception {
     //    String PD_ADDRESS = "127.0.0.1:2379";
     TiKVStorageService storageService = new TikvServiceImpl(Constants.PD_ADDRESS); // 创建Tikv服务
 
@@ -129,12 +129,14 @@ public class CreateItemDataByTiKV {
       // 调用writeData插入表数据
       rowid = storageService.writeData(tableName, itemFeature);
       // String tableName, String index_name, String index_value,int rowid
-      String index_name = "item_id";
-      String index_value = String.valueOf(i);
-      // 调用createUniqueIndex创建索引
-      isIndexCreated = storageService.createUniqueIndex(tableName, index_name, index_value, rowid);
-      if (isIndexCreated) {
-        System.out.println("item表成功创建索引！！");
+      if(Constants.INDEX_ON) {
+        String index_name = "item_id";
+        String index_value = String.valueOf(i);
+        // 调用createUniqueIndex创建索引
+        isIndexCreated = storageService.createUniqueIndex(tableName, index_name, index_value, rowid);
+        if (isIndexCreated) {
+          System.out.println("item表成功创建索引！！");
+        }
       }
     }
   }

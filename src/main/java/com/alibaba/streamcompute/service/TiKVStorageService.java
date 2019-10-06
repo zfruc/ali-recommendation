@@ -1,5 +1,7 @@
 package com.alibaba.streamcompute.service;
 
+import com.google.protobuf.ByteString;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -9,11 +11,11 @@ public interface TiKVStorageService {
   // 处理train_data和i2i表的插入
   int writeDataWithJSON(String tableName, String data) throws IOException;
   // 处理item和user表的插入
-  int writeData(String tableName, Map<String, String> data) throws IOException;
+  int writeData(String tableName, Map<String, String> data) throws Exception;
 
   boolean createUniqueIndex(String tableName, String rowkey_name, String rowkey_value, int rowid);
 
-  boolean createNoUniqueIndex(String tableName, String rowkey_name, String rowkey_value, int rowid);
+  boolean createNoUniqueIndex(String tableName, String rowkey_name, String rowkey_value, int rowid, String user_id);
 
   void updateI2i(
       Object result,
@@ -30,6 +32,14 @@ public interface TiKVStorageService {
 
   Map<String, Integer> getUserClickRecord(String userId) throws IOException, Exception;
 
-  public org.apache.flink.types.Row generateSample(String userId, List<String> itemIds)
+  org.apache.flink.types.Row generateSample(String userId, List<String> itemIds)
       throws Exception;
+
+  void createTiKVClient();
+
+  void delete(Object key);
+
+  void deleteDataByTableName(String tableName) throws Exception;
+
+  void deleteIndexByTableName(String tableName);
 }

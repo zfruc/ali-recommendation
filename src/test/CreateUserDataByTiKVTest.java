@@ -10,9 +10,9 @@ public class CreateUserDataByTiKVTest {
     private CreateUserDataByTiKV test;
 
     @Test
-    public void generate() throws IOException {
+    public void generate() throws Exception {
 
         // generate 50 row into "user"
-        test.generate(50);
+        test.generate(5);
     }
 }

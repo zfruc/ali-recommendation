@@ -19,42 +19,51 @@ public class TikvServiceImplTest {
     @Test
     public void scanData() throws Exception {
         List<Kvrpcpb.KvPair> result = (List<Kvrpcpb.KvPair>) storageService.scanData("user",new ArrayList<>());
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
+        System.out.println("---------------------------------------------user result.size:" + result.size() + "-------------------------------------");
+        for(Kvrpcpb.KvPair item: result){
             System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+        }
 
-        ArrayList<Map<String, String>> userFilterInfos = new ArrayList<>();
-        userFilterInfos.add(getFilterInfo("user_id", "3", "cf"));
-        result = (List<Kvrpcpb.KvPair>) storageService.scanData("user",userFilterInfos);
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
-            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+
+//        ArrayList<Map<String, String>> userFilterInfos = new ArrayList<>();
+//        userFilterInfos.add(getFilterInfo("user_id", "3", "cf"));
+//        result = (List<Kvrpcpb.KvPair>) storageService.scanData("user",userFilterInfos);
+//        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
+//        for(Kvrpcpb.KvPair item: result)
+//            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
 
         result = (List<Kvrpcpb.KvPair>) storageService.scanData("item",new ArrayList<>());
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
+        System.out.println("---------------------------------------------item result.size:" + result.size() + "-------------------------------------");
+        for(Kvrpcpb.KvPair item: result) {
             System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+        }
 
-        userFilterInfos.remove(0);
-        userFilterInfos.add(getFilterInfo("item_id", "3", "cf"));
-        result = (List<Kvrpcpb.KvPair>) storageService.scanData("item",userFilterInfos);
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
-            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+        result = (List<Kvrpcpb.KvPair>) storageService.scanData("click",new ArrayList<>());
+        System.out.println("---------------------------------------------click result.size:" + result.size() + "-------------------------------------");
+        for(Kvrpcpb.KvPair item: result) {
+            System.out.println(item.getKey().toStringUtf8() + '\t' + item.getValue().toStringUtf8());
+        }
+//
+//        userFilterInfos.remove(0);
+//        userFilterInfos.add(getFilterInfo("item_id", "3", "cf"));
+//        result = (List<Kvrpcpb.KvPair>) storageService.scanData("item",userFilterInfos);
+//        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
+//        for(Kvrpcpb.KvPair item: result)
+//            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+//
+//        userFilterInfos.remove(0);
+//        userFilterInfos.add(getFilterInfo("flag", "1", "cf"));
+//        result = (List<Kvrpcpb.KvPair>) storageService.scanData("click", userFilterInfos);
+//        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
+//        for(Kvrpcpb.KvPair item: result)
+//            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
 
-        userFilterInfos.remove(0);
-        userFilterInfos.add(getFilterInfo("flag", "1", "cf"));
-        result = (List<Kvrpcpb.KvPair>) storageService.scanData("click", userFilterInfos);
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
-            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
-
-        userFilterInfos.remove(0);
-        userFilterInfos.add(getFilterInfo("user_id", "1", "cf"));
-        result = (List<Kvrpcpb.KvPair>) storageService.scanData("click", userFilterInfos);
-        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
-        for(Kvrpcpb.KvPair item: result)
-            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
+//        userFilterInfos.remove(0);
+//        userFilterInfos.add(getFilterInfo("user_id", "1", "cf"));
+//        result = (List<Kvrpcpb.KvPair>) storageService.scanData("click", userFilterInfos);
+//        System.out.println("---------------------------------------------result.size:" + result.size() + "-------------------------------------");
+//        for(Kvrpcpb.KvPair item: result)
+//            System.out.println(item.getKey().toStringUtf8()+'\t'+item.getValue().toStringUtf8());
 
     }
 
@@ -107,5 +116,20 @@ public class TikvServiceImplTest {
 
     @Test
     public void generateSample() {
+    }
+
+    @Test
+    public void createTiKVClient(){
+        storageService.createTiKVClient();
+    }
+
+    @Test
+    public void deleteAllData() throws Exception {
+        storageService.deleteDataByTableName("user");
+        storageService.deleteDataByTableName("item");
+        storageService.deleteDataByTableName("click");
+        storageService.deleteIndexByTableName("user");
+        storageService.deleteIndexByTableName("item");
+        storageService.deleteIndexByTableName("click");
     }
 }
