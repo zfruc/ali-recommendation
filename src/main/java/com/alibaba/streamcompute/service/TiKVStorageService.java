@@ -28,7 +28,7 @@ public interface TiKVStorageService {
 
   Map<String, Map<String, Object>> getI2i() throws IOException;
 
-  Set<String> getItemIds() throws IOException, Exception;
+  Set<String> getItemIds() throws Exception;
 
   Map<String, Integer> getUserClickRecord(String userId) throws IOException, Exception;
 

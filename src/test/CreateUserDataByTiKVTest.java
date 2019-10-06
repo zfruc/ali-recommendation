@@ -13,6 +13,6 @@ public class CreateUserDataByTiKVTest {
     public void generate() throws Exception {
 
         // generate 50 row into "user"
-        test.generate(5);
+        test.generate(50);
     }
 }

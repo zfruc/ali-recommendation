@@ -16,6 +16,6 @@ public class CreateItemDataByTiKVTest {
     @Test
     public void generate() throws Exception {
 //        test = new CreateItemDataByTiKV();
-        test.generate(20);
+        test.generate(200);
     }
 }

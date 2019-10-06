@@ -12,7 +12,7 @@ public class TikvUtil {
     String[] col_value = val.split(",");
     String[] cv;
     for (String s : col_value) {
-      cv = s.split(",");
+      cv = s.split(":");
       String name = cv[0];
       String value = cv[1];
       row.put(name, value);

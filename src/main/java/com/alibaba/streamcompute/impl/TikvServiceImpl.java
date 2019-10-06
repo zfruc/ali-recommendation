@@ -305,7 +305,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     int kv_nums = data.size() - 1;
     int i = 0;
     for (Map.Entry<String, String> entry : data.entrySet()) {
-      valueBuilder = valueBuilder + entry.getKey() + "," + entry.getValue();
+      valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
       if (i < kv_nums) {
         valueBuilder += ",";
       }
@@ -352,9 +352,9 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     int kv_nums = data.size() - 1;
     int i = 0;
     for (Map.Entry<String, String> entry : data.entrySet()) {
-      valueBuilder = valueBuilder + entry.getKey() + "," + entry.getValue();
+      valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
       if (i < kv_nums) {
-        valueBuilder += ",";
+        valueBuilder += ":";
       }
     }
     ByteString tvalue = ByteString.copyFromUtf8(valueBuilder);
@@ -550,8 +550,10 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
   }
 
   @Override
-  public Set<String> getItemIds() throws IOException, Exception {
+  public Set<String> getItemIds() throws Exception {
+
     List<Kvrpcpb.KvPair> results = scanData("item", new ArrayList<>());
+    System.out.println("------------item.size()"+ results.size() + "----------------");
 
     Set<String> ids = new HashSet<>();
     String[] cells;
@@ -559,9 +561,15 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     try {
       for (Kvrpcpb.KvPair result : results) {
         cells = result.getValue().toStringUtf8().split(",");
-        value = cells[0].split(",");
-        if ("item_id".equals(value[0].trim())) { // trim方法是去除首位的空字符
-          ids.add(value[1].trim());
+        for(String cell: cells){
+          if (cell.contains("item_id")){
+            value = cell.split(":");
+            System.out.println("value" + value[0]);
+            if ("item_id".equals(value[0].trim())) { // trim方法是去除首位的空字符
+              ids.add(value[1].trim());
+              break;
+            }
+          }
         }
       }
     } catch (Exception ignore) {

@@ -73,7 +73,6 @@ public class TikvServiceImplTest {
 
     @Test
     public void writeData() {
-        System.out.println("test right");
     }
 
     @Test
