@@ -25,7 +25,7 @@ public class Predict {
     List<String> topk = new ArrayList<>();
     String valueStr = String.valueOf(row.getField(0)).trim();
     valueStr = valueStr.substring(0, valueStr.length() - 1);
-    String[] keys = valueStr.split(":");
+    String[] keys = valueStr.split(",");
     String userId = keys[0];
     String[] items = keys[1].split("\\|");
     List<Tuple2<String, Float>> tuple2List = new ArrayList<>();

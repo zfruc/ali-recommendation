@@ -62,11 +62,11 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     if (filters.isEmpty()) {
       ByteString tkey_min =
           ByteString.copyFromUtf8(
-              String.format("%s#%s#%s", tableName + ":", "r" + ":", String.valueOf(1)));
+              String.format("%s#%s#%s", tableName + ",", "r" + ",", String.valueOf(1)));
       ByteString tkey_max =
           ByteString.copyFromUtf8(
               String.format(
-                  "%s#%s#%s", tableName + ":", "r" + ":", Constants.ROWID_MAX));
+                  "%s#%s#%s", tableName + ",", "r" + ",", Constants.ROWID_MAX));
       result = client.scan(tkey_min, tkey_max);
     }
     // If filters exist, treat it separately
@@ -84,11 +84,11 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
           ByteString ikey =
               ByteString.copyFromUtf8(
                   String.format(
-                      "%s#%s#%s#%s", tableName + ":", "i" + ":", filterKey + ":", filterValue));
+                      "%s#%s#%s#%s", tableName + ",", "i" + ",", filterKey + ",", filterValue));
           ByteString index = client.get(ikey);
           ByteString targetKey =
               ByteString.copyFromUtf8(
-                  String.format("%s#%s#%s", tableName + ":", "r" + ":", index.toStringUtf8()));
+                  String.format("%s#%s#%s", tableName + ",", "r" + ",", index.toStringUtf8()));
           tmpResult = client.scan(targetKey, 1);
         }
         // else scan click by user_id or flag
@@ -97,20 +97,20 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
               ByteString.copyFromUtf8(
                   String.format(
                       "%s#%s#%s#%s#%s",
-                      tableName + ":",
-                      "i" + ":",
-                      filterKey + ":",
-                      filterValue + ":",
+                      tableName + ",",
+                      "i" + ",",
+                      filterKey + ",",
+                      filterValue + ",",
                       String.valueOf(0)));
 
           ByteString ikey_max =
               ByteString.copyFromUtf8(
                   String.format(
                       "%s#%s#%s#%s#%s",
-                      tableName + ":",
-                      "i" + ":",
-                      filterKey + ":",
-                      filterValue + ":",
+                      tableName + ",",
+                      "i" + ",",
+                      filterKey + ",",
+                      filterValue + ",",
                       String.valueOf(Constants.ROWID_MAX)));
 
           List<Kvrpcpb.KvPair> indexList = client.scan(ikey_min, ikey_max);
@@ -120,7 +120,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
                     ByteString.copyFromUtf8(
                         String.format(
                             "%s#%s#%s",
-                            tableName + ":", "r" + ":", index.getValue().toStringUtf8())),
+                            tableName + ",", "r" + ",", index.getValue().toStringUtf8())),
                     1);
             tmpResult.addAll(scanResult);
           }
@@ -158,21 +158,21 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
       if(tableName.equals("user") || tableName.equals("item")){
         ByteString tkey_min =
                 ByteString.copyFromUtf8(
-                        String.format("%s#%s#%s", tableName + ":", "r" + ":", String.valueOf(0)));
+                        String.format("%s#%s#%s", tableName + ",", "r" + ",", String.valueOf(0)));
         ByteString tkey_max =
                 ByteString.copyFromUtf8(
                         String.format(
-                                "%s#%s#%s", tableName + ":", "r" + ":", Constants.USERID_MAX));
+                                "%s#%s#%s", tableName + ",", "r" + ",", Constants.USERID_MAX));
 //        System.out.println(tkey_min.toStringUtf8() + '\t' + tkey_max.toStringUtf8());
         result = client.scan(tkey_min, tkey_max);
       }
       else{
         ByteString tkey_min =
                 ByteString.copyFromUtf8(
-                        String.format("%s#%s#%s#%s", tableName + ":", "r" + ":", 9 + ":", 92));
+                        String.format("%s#%s#%s#%s", tableName + ",", "r" + ",", 0 + ",", 0));
         ByteString tkey_max =
                 ByteString.copyFromUtf8(
-                        String.format("%s#%s#%s#%s", tableName + ":", "r" + ":", 9 + ":", 99));
+                        String.format("%s#%s#%s#%s", tableName + ",", "r" + ",", Constants.USERID_MAX + ",", Constants.ROWID_MAX));
         result = client.scan(tkey_min, tkey_max);
       }
     }
@@ -190,7 +190,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
                 || (tableName.equals("item") && filterKey.equals("item_id"))) {
           ByteString targetKey =
                   ByteString.copyFromUtf8(
-                          String.format("%s#%s#%s", tableName + ":", "r" + ":", filterInfo.get("filterValue")));
+                          String.format("%s#%s#%s", tableName + ",", "r" + ",", filterInfo.get("filterValue")));
           tmpResult = client.scan(targetKey, 1);
         }
         // else scan click by user_id or flag
@@ -198,10 +198,10 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
           if(filterInfo.get("filterKey").equals("user_id")){
             ByteString tkey_min =
                     ByteString.copyFromUtf8(
-                            String.format("%s#%s#%s#%s", tableName + ":", "r" + ":", filterInfo.get("filterValue") + ":", String.valueOf(0)));
+                            String.format("%s#%s#%s#%s", tableName + ",", "r" + ",", filterInfo.get("filterValue") + ",", String.valueOf(0)));
             ByteString tkey_max =
                     ByteString.copyFromUtf8(
-                            String.format("%s#%s#%s#%s", tableName + ":", "r" + ":", filterInfo.get("filterValue") + ":", Constants.ROWID_MAX));
+                            String.format("%s#%s#%s#%s", tableName + ",", "r" + ",", filterInfo.get("filterValue") + ",", Constants.ROWID_MAX));
             tmpResult = client.scan(tkey_min,tkey_max);
           }
           else if(filterInfo.get("filterKey").equals("flag")){
@@ -209,27 +209,27 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
                     ByteString.copyFromUtf8(
                             String.format(
                                     "%s#%s#%s#%s#%s",
-                                    tableName + ":",
-                                    "i" + ":",
-                                    filterKey + ":",
-                                    filterValue + ":",
+                                    tableName + ",",
+                                    "i" + ",",
+                                    filterKey + ",",
+                                    filterValue + ",",
                                     String.valueOf(0)));
 
             ByteString ikey_max =
                     ByteString.copyFromUtf8(
                             String.format(
                                     "%s#%s#%s#%s#%s",
-                                    tableName + ":",
-                                    "i" + ":",
-                                    filterKey + ":",
-                                    filterValue + ":",
+                                    tableName + ",",
+                                    "i" + ",",
+                                    filterKey + ",",
+                                    filterValue + ",",
                                     String.valueOf(Constants.ROWID_MAX)));
             List<Kvrpcpb.KvPair> indexList = client.scan(ikey_min, ikey_max);
             for (Kvrpcpb.KvPair index : indexList) {
               List<Kvrpcpb.KvPair> scanResult =
                       client.scan(
                               ByteString.copyFromUtf8(
-                                      String.format("%s#%s#%s", tableName + ":", "r" + ":", index.getValue())),
+                                      String.format("%s#%s#%s", tableName + ",", "r" + ",", index.getValue())),
                               1);
               tmpResult.addAll(scanResult);
             }
@@ -259,11 +259,11 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
       client = session.createRawClient();
     }
     // 创建表数据（根据HBaseServiceImpl里的调用，发现只有train_data表和i2i表用到了writeData方法来创建HTable）
-    // 注意，因为tableName含有"_"，所以采用了":"来作分隔符
+    // 注意，因为tableName含有"_"，所以采用了","来作分隔符
     // tkey由 tablePrefix_rowPrefix_rowID 构成
     ByteString tkey =
         ByteString.copyFromUtf8(
-            String.format("%s#%s#%s", tableName + ":", "r" + ":", String.valueOf(RowID)));
+            String.format("%s#%s#%s", tableName + ",", "r" + ",", String.valueOf(RowID)));
     RowID++; // 每插入一行数据RowID自增1
     ByteString tvalue = ByteString.copyFromUtf8(data);
     client.put(tkey, tvalue);
@@ -290,11 +290,14 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
       client = session.createRawClient();
     }
     // 创建表数据（根据HBaseServiceImpl里的调用，发现只有train_data表和i2i表用到了writeData方法来创建HTable）
-    // 注意，因为tableName含有"_"，所以采用了":"来作分隔符
+    // 注意，因为tableName含有"_"，所以采用了","来作分隔符
+    // former version use ";" as separator, now changing to ","
+    // because ";" in ascii is bigger than "9", it will confuse key range split
+    // if ";" was used as separator, #0:#1 < #10:#1 < #11:#1 < #19:#1 < #1:#1 < #20:#1 < #2:#1
     // tkey由 tablePrefix_rowPrefix_rowID 构成
     ByteString tkey =
             ByteString.copyFromUtf8(
-                    String.format("%s#%s#%s", tableName + ":", "r" + ":", String.valueOf(RowID)));
+                    String.format("%s#%s#%s", tableName + ",", "r" + ",", String.valueOf(RowID)));
     RowID++; // 每插入一行数据RowID自增1
 
     // tvalue由"col1Name:col1value,col2Name:col2value"组成
@@ -302,7 +305,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     int kv_nums = data.size() - 1;
     int i = 0;
     for (Map.Entry<String, String> entry : data.entrySet()) {
-      valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
+      valueBuilder = valueBuilder + entry.getKey() + "," + entry.getValue();
       if (i < kv_nums) {
         valueBuilder += ",";
       }
@@ -329,15 +332,15 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     ByteString tkey;
     if(tableName.equals("user")){
       tkey = ByteString.copyFromUtf8(
-              String.format("%s#%s#%s", tableName + ":", "r" + ":", data.get("user_id")));
+              String.format("%s#%s#%s", tableName + ",", "r" + ",", data.get("user_id")));
     }
     else if (tableName.equals("item")){
       tkey = ByteString.copyFromUtf8(
-              String.format("%s#%s#%s", tableName + ":", "r" + ":", data.get("item_id")));
+              String.format("%s#%s#%s", tableName + ",", "r" + ",", data.get("item_id")));
     }
     else if (tableName.equals("click")){
       tkey = ByteString.copyFromUtf8(
-              String.format("%s#%s#%s#%s", tableName + ":", "r" + ":", data.get("user_id") + ":", String.valueOf(RowID)));
+              String.format("%s#%s#%s#%s", tableName + ",", "r" + ",", data.get("user_id") + ",", String.valueOf(RowID)));
     }
     else {
       throw new Exception("passing a wrong table to writeData function: " + tableName);
@@ -349,7 +352,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     int kv_nums = data.size() - 1;
     int i = 0;
     for (Map.Entry<String, String> entry : data.entrySet()) {
-      valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
+      valueBuilder = valueBuilder + entry.getKey() + "," + entry.getValue();
       if (i < kv_nums) {
         valueBuilder += ",";
       }
@@ -375,7 +378,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     ByteString ikey =
         ByteString.copyFromUtf8(
             String.format(
-                "%s#%s#%s#%s", tableName + ":", "i" + ":", index_name + ":", index_value));
+                "%s#%s#%s#%s", tableName + ",", "i" + ",", index_name + ",", index_value));
     // ivalue为RowID
     ByteString ivalue = ByteString.copyFromUtf8(String.valueOf(rowid));
     client.put(ikey, ivalue);
@@ -407,10 +410,10 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
         ByteString.copyFromUtf8(
             String.format(
                 "%s#%s#%s#%s#%s",
-                tableName + ":",
-                "i" + ":",
-                index_name + ":",
-                index_value + ":",
+                tableName + ",",
+                "i" + ",",
+                index_name + ",",
+                index_value + ",",
                 String.valueOf(rowid)));
     // ivalue为RowID
     ByteString ivalue = ByteString.copyFromUtf8(String.valueOf(RowID));
@@ -433,16 +436,16 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
             ByteString.copyFromUtf8(
                     String.format(
                             "%s#%s#%s#%s#%s",
-                            tableName + ":",
-                            "i" + ":",
-                            index_name + ":",
-                            index_value + ":",
+                            tableName + ",",
+                            "i" + ",",
+                            index_name + ",",
+                            index_value + ",",
                             String.valueOf(rowid)));
     // ivalue为 user_id:rowID
     ByteString ivalue = ByteString.copyFromUtf8(
             String.format(
                     "%s#%s",
-                    user_id + ":",
+                    user_id + ",",
                     String.valueOf(rowid)));
     client.put(ikey, ivalue);
     session.close();
@@ -482,11 +485,11 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     // 查找索引找到rowid
     ByteString ikey =
         ByteString.copyFromUtf8(
-            String.format("%s#%s#%s#%s", tableName + ":", "i" + ":", indexKey + ":", indexValue));
+            String.format("%s#%s#%s#%s", tableName + ",", "i" + ",", indexKey + ",", indexValue));
     ByteString ivalue = client.get(ikey);
     String rowid = ivalue.toStringUtf8();
     ByteString tkey =
-        ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ":", "r" + ":", rowid));
+        ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ",", "r" + ",", rowid));
     ByteString tvalue = client.get(tkey);
     String value = tvalue.toStringUtf8();
     // 关闭数据库连接
@@ -507,16 +510,16 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
         ByteString.copyFromUtf8(
             String.format(
                 "%s#%s#%s#%s#%s",
-                tableName + ":",
-                "i" + ":",
-                indexKey + ":",
-                indexValue + ":",
+                tableName + ",",
+                "i" + ",",
+                indexKey + ",",
+                indexValue + ",",
                 String.valueOf(rowID)));
     ByteString ivalue = client.get(ikey);
     if (ivalue == null) return null;
     String rowid = ivalue.toStringUtf8();
     ByteString tkey =
-        ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ":", "r" + ":", rowid));
+        ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ",", "r" + ",", rowid));
     ByteString tvalue = client.get(tkey);
     String value = tvalue.toStringUtf8();
     // 关闭数据库连接
@@ -556,7 +559,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     try {
       for (Kvrpcpb.KvPair result : results) {
         cells = result.getValue().toStringUtf8().split(",");
-        value = cells[0].split(":");
+        value = cells[0].split(",");
         if ("item_id".equals(value[0].trim())) { // trim方法是去除首位的空字符
           ids.add(value[1].trim());
         }
@@ -659,12 +662,12 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
           ByteString ikey_min =
                   ByteString.copyFromUtf8(
                           String.format(
-                                  "%s#%s#%s#%s", tableName + ":", "i" + ":", tableName +"_id" + ":", "0"));
-          //the index key is String.format("%s#%s#%s#%s", tableName + ":", "i" + ":", indexColumnName + ":", indexColumnValue)
+                                  "%s#%s#%s#%s", tableName + ",", "i" + ",", tableName +"_id" + ",", "0"));
+          //the index key is String.format("%s#%s#%s#%s", tableName + ",", "i" + ",", indexColumnName + ",", indexColumnValue)
           ByteString ikey_max =
                   ByteString.copyFromUtf8(
                           String.format(
-                                  "%s#%s#%s#%s", tableName + ":", "i" + ":", tableName +"_id" + ":", Constants.USERID_MAX));
+                                  "%s#%s#%s#%s", tableName + ",", "i" + ",", tableName +"_id" + ",", Constants.USERID_MAX));
           List<Kvrpcpb.KvPair> indexResults = client.scan(ikey_min,ikey_max);
           for (Kvrpcpb.KvPair indexResult: indexResults) {
             client.delete(indexResult.getKey());
@@ -679,12 +682,12 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
           ByteString ikey_min =
                   ByteString.copyFromUtf8(
                           String.format(
-                                  "%s#%s#%s#%s", tableName + ":", "i" + ":", "user_id" + ":", "0"));
-          //the index key is String.format("%s#%s#%s#%s", tableName + ":", "i" + ":", indexColumnName + ":", indexColumnValue)
+                                  "%s#%s#%s#%s", tableName + ",", "i" + ",", "user_id" + ",", "0"));
+          //the index key is String.format("%s#%s#%s#%s", tableName + ",", "i" + ",", indexColumnName + ",", indexColumnValue)
           ByteString ikey_max =
                   ByteString.copyFromUtf8(
                           String.format(
-                                  "%s#%s#%s#%s", tableName + ":", "i" + ":", "user_id" + ":", Constants.USERID_MAX));
+                                  "%s#%s#%s#%s", tableName + ",", "i" + ",", "user_id" + ",", Constants.USERID_MAX));
           List<Kvrpcpb.KvPair> indexResults = client.scan(ikey_min,ikey_max);
           for (Kvrpcpb.KvPair indexResult: indexResults) {
             client.delete(indexResult.getKey());
@@ -692,17 +695,17 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
         }
         ByteString ikey_min = ByteString.copyFromUtf8(
                         String.format("%s#%s#%s#%s#%s",
-                                tableName + ":",
-                                "i" + ":",
-                                "flag" + ":",
-                                "0" + ":",
+                                tableName + ",",
+                                "i" + ",",
+                                "flag" + ",",
+                                "0" + ",",
                                 "0")); // the first "0" is flag, the second "0" is the minimize of rowid
         ByteString ikey_max = ByteString.copyFromUtf8(
                 String.format("%s#%s#%s#%s#%s",
-                        tableName + ":",
-                        "i" + ":",
-                        "flag" + ":",
-                        "1" + ":",
+                        tableName + ",",
+                        "i" + ",",
+                        "flag" + ",",
+                        "1" + ",",
                         Constants.ROWID_MAX)); // the "1" is flag
         // delete all data under non-unique index
         List<Kvrpcpb.KvPair> indexResults = client.scan(ikey_min,ikey_max);

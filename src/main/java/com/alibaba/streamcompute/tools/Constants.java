@@ -18,8 +18,8 @@ public class Constants {
   public static final String MODEL_CKPT = "model.ckpt-1384";
     public static final String PD_ADDRESS = "202.112.113.22:2379";
 //  public static final String PD_ADDRESS = "127.0.0.1:2379";
-  public static final String ROWID_MAX = "9"; // in ByteString, 0 < 10 < 11 < 19 < 1 < 20 < 20 < 29. so 9 is the biggest
-  public static final String USERID_MAX = "9"; // Integer.MAX_VALUE = 2147483647
+  public static final String ROWID_MAX = "9999999999"; // in ByteString, 0 < 10 < 11 < 19 < 1 < 20 < 20 < 29. so 9 is the biggest
+  public static final String USERID_MAX = "9999999999"; // Integer.MAX_VALUE = 2147483647
   public static final boolean INDEX_ON = false;
   // If INDEX_ON is true, the key format of "user" "item" is tablePrefix_rowPrefix_rowID , and we create a unique index on column user_id/item_id to get rowID
   // else if INDEX_ON is false, the key format of "user" "item" is tablePrefix_rowPrefix_userId:value/itemID:value, and we won't create index.

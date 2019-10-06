@@ -111,7 +111,7 @@ def predict(json, ckpt_path):
         checkpoint_path=ckpt_path,
         yield_single_examples=True)
 
-    res = str(userId)+":"
+    res = str(userId)+","
 
     for id, pred_dict in zip(ids, predictions):
         if pred_dict:

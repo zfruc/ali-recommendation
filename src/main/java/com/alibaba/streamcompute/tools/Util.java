@@ -17,7 +17,7 @@ public class Util {
     properties.setProperty(Constants.KAFKA_BOOTSTRAP, Constants.KAFKA_BOOTSTRAP_VALUE);
     properties.setProperty(
         Constants.ZK_CONNECT,
-        Constants.ZOOKEEPER_QUORUM_VALUE + ":" + Constants.ZOOKEEPER_CLIENT_PORT_VALUE);
+        Constants.ZOOKEEPER_QUORUM_VALUE + "," + Constants.ZOOKEEPER_CLIENT_PORT_VALUE);
     return properties;
   }
 
