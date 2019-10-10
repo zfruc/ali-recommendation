@@ -1,6 +1,5 @@
 package com.alibaba.streamcompute.service;
 
-import com.google.protobuf.ByteString;
 
 import java.io.IOException;
 import java.util.*;
@@ -15,7 +14,8 @@ public interface TiKVStorageService {
 
   boolean createUniqueIndex(String tableName, String rowkey_name, String rowkey_value, int rowid);
 
-  boolean createNoUniqueIndex(String tableName, String rowkey_name, String rowkey_value, int rowid, String user_id);
+  boolean createNoUniqueIndex(
+      String tableName, String rowkey_name, String rowkey_value, int rowid, String user_id);
 
   void updateI2i(
       Object result,
@@ -32,8 +32,7 @@ public interface TiKVStorageService {
 
   Map<String, Integer> getUserClickRecord(String userId) throws IOException, Exception;
 
-  org.apache.flink.types.Row generateSample(String userId, List<String> itemIds)
-      throws Exception;
+  org.apache.flink.types.Row generateSample(String userId, List<String> itemIds) throws Exception;
 
   void createTiKVClient();
 
