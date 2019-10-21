@@ -10,6 +10,7 @@ import com.alibaba.streamcompute.tools.Constants;
 import com.alibaba.streamcompute.tools.Util;
 import java.io.IOException;
 import java.io.Serializable;
+import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.apache.flink.types.Row;
@@ -23,16 +24,29 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
   private String PD_ADDRESS;
   private RawKVClient client;
   private int RowID; // 自增变量
+  private BigInteger ONE = new BigInteger("1");
+  private BigInteger scanTimes;
+  private BigInteger NoUniqueIndexTimes;
+  private BigInteger UniqueIndexTimes;
+  private BigInteger UpdateI2iTimes;
+  private BigInteger writeTimes;
+  private BigInteger writeJSONTimes;
 
   public TikvServiceImpl(String pd_addr) {
     PD_ADDRESS = pd_addr;
     RowID = 1;
+    scanTimes = new BigInteger("0");
+    NoUniqueIndexTimes = new BigInteger("0");
+    UpdateI2iTimes = new BigInteger("0");
+    writeTimes = new BigInteger("0");
+    writeJSONTimes = new BigInteger("0");
   }
   // 注： 这里把Result换掉了，一个是因为它出现的地方不多，另一个是最关键的，就是Kvrpcpb.KvPair这种类型
   // 应该是RawKVClient底层在存储KV数据时用到的，所以我们最好直接用这种类型进行处理
   @Override
   public List<Kvrpcpb.KvPair> scanData(String tableName, ArrayList<Map<String, String>> filters)
       throws Exception {
+    scanTimes.add(ONE);
     if (Constants.INDEX_ON) {
       return _scanData_PlanA(tableName, filters);
     } else return _scanData_PlanB(tableName, filters);
@@ -256,6 +270,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
   // 处理train_data和i2i表的插入，value数据类型用JSON来存，这样在代码中有两个地方存KV数据时比较方便
   @Override
   public int writeDataWithJSON(String tableName, String data) {
+    writeJSONTimes.add(ONE);
     // 建立数据库连接
     TiSession session = TiSession.create(TiConfiguration.createRawDefault(PD_ADDRESS));
     if (client == null) {
@@ -278,6 +293,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
   @Override
   // 处理item、user和click表的插入
   public int writeData(String tableName, Map<String, String> data) throws Exception {
+    writeTimes.add(ONE);
     if (Constants.INDEX_ON) return _writeData_PlanA(tableName, data);
     else return _writeData_PlanB(tableName, data);
   }
@@ -394,6 +410,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
   @Override
   public boolean createNoUniqueIndex(
       String tableName, String index_name, String index_value, int rowid, String user_id) {
+    NoUniqueIndexTimes.add(ONE);
     if (Constants.INDEX_ON)
       return _createNoUniqueIndex_PlanA(tableName, index_name, index_value, rowid, user_id);
     else return _createNoUniqueIndex_PlanB(tableName, index_name, index_value, rowid, user_id);
@@ -457,6 +474,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
       Object result,
       Map<String, Map<String, Integer>> userRecord,
       Map<String, Map<String, Integer>> i2i) {
+    UpdateI2iTimes.add(ONE);
     List<Kvrpcpb.KvPair> list = (List<Kvrpcpb.KvPair>) result;
     try {
       for (Kvrpcpb.KvPair result1 : list) {
