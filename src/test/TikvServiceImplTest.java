@@ -6,11 +6,8 @@ import org.tikv.kvproto.Kvrpcpb;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 
-import static com.alibaba.streamcompute.tools.tikv.TikvUtil.getFilterInfo;
-import static org.junit.Assert.*;
 
 public class TikvServiceImplTest {
 
@@ -130,5 +127,48 @@ public class TikvServiceImplTest {
         storageService.deleteIndexByTableName("user");
         storageService.deleteIndexByTableName("item");
         storageService.deleteIndexByTableName("click");
+    }
+
+    @Test
+    public void loadToTiKVFromHBaseTest() throws Exception {
+        List<String> item_features = new ArrayList<>();
+        item_features.add("item_id");
+        item_features.add("item_expo_id");
+        item_features.add("item_category");
+        item_features.add("item_category_level1");
+        item_features.add("item_seller_city");
+        item_features.add("item_seller_prov");
+        item_features.add("item_purch_level");
+        item_features.add("item_gender");
+        item_features.add("item_buyer_age");
+        item_features.add("item_style_id");
+        item_features.add("item_material_id");
+        item_features.add("item_pay_class");
+        item_features.add("item_brand_id");
+        item_features.add("item__i_shop_id_ctr");
+        item_features.add("item__i_brand_id_ctr");
+        item_features.add("item__i_category_ctr");
+
+
+        List<String> user_features = new ArrayList<>();
+        user_features.add("user_id");
+        user_features.add("pred_gender");
+        user_features.add("pred_age_level");
+        user_features.add("pred_career_type");
+        user_features.add("pred_education_degree");
+        user_features.add("pred_baby_age");
+        user_features.add("pred_has_pet");
+        user_features.add("pred_has_car");
+        user_features.add("pred_life_stage");
+        user_features.add("pred_has_house");
+        user_features.add("os");
+
+        List<String> click_feature = new ArrayList<>();
+        click_feature.add("user_id");
+        click_feature.add("item_id");
+        click_feature.add("flag");
+        click_feature.add("date");
+
+        storageService.loadToTiKVFromHBase("item",item_features);
     }
 }

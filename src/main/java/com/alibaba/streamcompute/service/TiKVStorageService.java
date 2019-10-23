@@ -1,6 +1,5 @@
 package com.alibaba.streamcompute.service;
 
-
 import java.io.IOException;
 import java.util.*;
 
@@ -41,4 +40,6 @@ public interface TiKVStorageService {
   void deleteDataByTableName(String tableName) throws Exception;
 
   void deleteIndexByTableName(String tableName);
+
+  void loadToTiKVFromHBase(String tableName, List<String> features) throws Exception;
 }

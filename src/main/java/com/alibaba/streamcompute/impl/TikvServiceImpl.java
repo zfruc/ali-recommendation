@@ -5,8 +5,10 @@ import static com.alibaba.streamcompute.tools.Util.getSample;
 import static com.alibaba.streamcompute.tools.tikv.TikvUtil.getRow;
 
 import com.alibaba.fastjson.JSONObject;
+import com.alibaba.streamcompute.service.StorageService;
 import com.alibaba.streamcompute.service.TiKVStorageService;
 import com.alibaba.streamcompute.tools.Constants;
+import com.alibaba.streamcompute.tools.HBaseUtil;
 import com.alibaba.streamcompute.tools.Util;
 import java.io.IOException;
 import java.io.Serializable;
@@ -14,6 +16,8 @@ import java.math.BigInteger;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import org.apache.flink.types.Row;
+import org.apache.hadoop.hbase.client.Connection;
+import org.apache.hadoop.hbase.client.Result;
 import org.tikv.common.TiConfiguration;
 import org.tikv.common.TiSession;
 import org.tikv.kvproto.Kvrpcpb;
@@ -371,7 +375,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     for (Map.Entry<String, String> entry : data.entrySet()) {
       valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
       if (i < kv_nums) {
-        valueBuilder += ":";
+        valueBuilder += ",";
         i++;
       }
     }
@@ -755,5 +759,71 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     }
 
     session.close();
+  }
+
+  @Override
+  public void loadToTiKVFromHBase(String tableName, List<String> features) throws Exception {
+    StorageService storageService = new HBaseServiceImpl(); // hbase服务的接口
+
+    TiSession session = TiSession.create(TiConfiguration.createRawDefault(PD_ADDRESS));
+    if (client == null) {
+      client = session.createRawClient();
+    }
+
+    Connection connection = HBaseUtil.getHbaseConnection();
+    List<Result> results = (List<Result>) storageService.scanData("item", new ArrayList<>());
+
+    // first decide the key format prefix
+    ByteString tkey;
+    String keyColumn;
+    if (tableName.equals("user")) {
+      tkey = ByteString.copyFromUtf8(String.format("%s#%s#", tableName + ",", "r" + ","));
+      keyColumn = "user_id";
+    } else if (tableName.equals("item")) {
+      tkey = ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ",", "r" + ","));
+      keyColumn = "item_id";
+    } else if (tableName.equals("click")) {
+      tkey = ByteString.copyFromUtf8(String.format("%s#%s#", tableName + ",", "r" + ","));
+      keyColumn = "user_id";
+    } else {
+      throw new Exception("passing a wrong table to loadToTiKBFromHBase function: " + tableName);
+    }
+
+    try {
+
+      for (Result result : results) {
+        Map<String, String> row = HBaseUtil.getRow(result);
+        ByteString kv_key;
+        if (tableName.equals("user") || tableName.equals("item"))
+          kv_key = tkey.concat(ByteString.copyFromUtf8(row.get(keyColumn)));
+        else
+          kv_key =
+              tkey.concat(
+                  ByteString.copyFromUtf8(
+                      String.format("%s#%s", row.get(keyColumn) + ",", String.valueOf(RowID))));
+
+        RowID++;
+
+        String valueBuilder = "";
+        int kv_nums = row.size() - 1;
+        int i = 0;
+        for (Map.Entry<String, String> entry : row.entrySet()) {
+          valueBuilder = valueBuilder + entry.getKey() + ":" + entry.getValue();
+          if (i < kv_nums) {
+            valueBuilder += ",";
+            i++;
+          }
+        }
+        ByteString kv_value = ByteString.copyFromUtf8(valueBuilder);
+
+        client.put(kv_key, kv_value);
+      }
+
+    } catch (Exception ignore) {
+
+    }
+
+    session.close();
+    connection.close();
   }
 }

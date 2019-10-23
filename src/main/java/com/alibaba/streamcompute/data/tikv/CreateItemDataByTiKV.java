@@ -3,6 +3,7 @@ package com.alibaba.streamcompute.data.tikv;
 import com.alibaba.streamcompute.impl.TikvServiceImpl;
 import com.alibaba.streamcompute.service.TiKVStorageService;
 import com.alibaba.streamcompute.tools.Constants;
+import java.io.IOException;
 import java.util.*;
 
 public class CreateItemDataByTiKV {
@@ -140,4 +141,6 @@ public class CreateItemDataByTiKV {
       }
     }
   }
+
+  public static void loadToTiKV() throws IOException {}
 }
