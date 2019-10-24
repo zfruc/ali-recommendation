@@ -13,7 +13,8 @@ public class Constants {
   public static final String KAFKA_LINGER_MS = "linger.ms";
   public static final String KAFKA_ACKS = "acks";
   public static final String ZK_CONNECT = "zookeeper.connect";
-  public static final String ZOOKEEPER_QUORUM_VALUE = "localhost";
+  public static final String ZOOKEEPER_QUORUM_VALUE =
+      "192.168.1.101,192.168.1.104,192.168.1.105,192.168.1.106";
   public static final String ZOOKEEPER_CLIENT_PORT_VALUE = "2181";
   public static final String MODEL_CKPT = "model.ckpt-1384";
   public static final String PD_ADDRESS = "192.168.1.101:2379";
