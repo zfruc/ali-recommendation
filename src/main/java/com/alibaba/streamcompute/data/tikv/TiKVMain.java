@@ -15,38 +15,38 @@ public class TiKVMain {
     SimpleDateFormat sdm = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ HHµã:mm·Ö:ss:Ãë");
     if (args[0].equals("itemput")) {
       String time_itemput1 = sdm.format(new Date());
-      System.out.println("item±í¿ªÊŒ²åÈëµÄÊ±ŒäÎª£º" + time_itemput1);
+      System.out.println("item put begins" + time_itemput1);
 
       CreateItemDataByTiKV.main(null);
 
       String time_itemput2 = sdm.format(new Date());
-      System.out.println("item±í²åÈëÍê³ÉµÄÊ±ŒäÎª£º" + time_itemput2);
+      System.out.println("item put ends" + time_itemput2);
     } else if (args[0].equals("userput")) {
       String time_userput1 = sdm.format(new Date());
-      System.out.println("user±í¿ªÊŒ²åÈëµÄÊ±ŒäÎª£º" + time_userput1);
+      System.out.println("user put begins" + time_userput1);
 
       CreateUserDataByTiKV.main(null);
 
       String time_userput2 = sdm.format(new Date());
-      System.out.println("user±í²åÈëÍê³ÉµÄÊ±ŒäÎª£º" + time_userput2);
+      System.out.println("user put ends" + time_userput2);
     } else if (args[0].equals("clickput")) {
       String time_clickput1 = sdm.format(new Date());
-      System.out.println("click±í¿ªÊŒ²åÈëµÄÊ±ŒäÎª£º" + time_clickput1);
+      System.out.println("click put begins" + time_clickput1);
 
       WriteClickRecordToTiKV.main(null);
 
       String time_clickput2 = sdm.format(new Date());
-      System.out.println("click±í²åÈëÍê³ÉµÄÊ±ŒäÎª£º" + time_clickput2);
+      System.out.println("click put ends" + time_clickput2);
     } else if (args[0].equals("scan")) {
       TiKVStorageService storageService = new TikvServiceImpl(Constants.PD_ADDRESS);
       String time_scan_user1 = sdm.format(new Date());
-      System.out.println("user±í¿ªÊŒÈ«±íÉšÃèµÄÊ±ŒäÎª£º" + time_scan_user1);
+      System.out.println("user scan begins" + time_scan_user1);
 
       List<Kvrpcpb.KvPair> result =
           (List<Kvrpcpb.KvPair>) storageService.scanData("user", new ArrayList<>());
 
       String time_scan_user2 = sdm.format(new Date());
-      System.out.println("user±íÉšÃèÍê³ÉµÄÊ±ŒäÎª£º" + time_scan_user2);
+      System.out.println("user scan ends" + time_scan_user2);
       System.out.println(
           "---------------------------------------------user result.size:"
               + result.size()
@@ -56,12 +56,12 @@ public class TiKVMain {
       }
 
       String time_scan_item1 = sdm.format(new Date());
-      System.out.println("item±í¿ªÊŒÈ«±íÉšÃèµÄÊ±ŒäÎª£º" + time_scan_item1);
+      System.out.println("item scan begins" + time_scan_item1);
 
       result = (List<Kvrpcpb.KvPair>) storageService.scanData("item", new ArrayList<>());
 
       String time_scan_item2 = sdm.format(new Date());
-      System.out.println("item±íÉšÃèÍê³ÉµÄÊ±ŒäÎª£º" + time_scan_item2);
+      System.out.println("item scan ends" + time_scan_item2);
       System.out.println(
           "---------------------------------------------item result.size:"
               + result.size()
@@ -71,12 +71,12 @@ public class TiKVMain {
       }
 
       String time_scan_click1 = sdm.format(new Date());
-      System.out.println("click±í¿ªÊŒÈ«±íÉšÃèµÄÊ±ŒäÎª£º" + time_scan_click1);
+      System.out.println("click scan begins" + time_scan_click1);
 
       result = (List<Kvrpcpb.KvPair>) storageService.scanData("click", new ArrayList<>());
 
       String time_scan_click2 = sdm.format(new Date());
-      System.out.println("click±íÉšÃèÍê³ÉµÄÊ±ŒäÎª£º" + time_scan_click2);
+      System.out.println("click scan ends" + time_scan_click2);
       System.out.println(
           "---------------------------------------------click result.size:"
               + result.size()

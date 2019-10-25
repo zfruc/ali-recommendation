@@ -1,7 +1,10 @@
 package com.alibaba.streamcompute.data;
 
 import com.alibaba.streamcompute.impl.HBaseServiceImpl;
+import com.alibaba.streamcompute.impl.TikvServiceImpl;
 import com.alibaba.streamcompute.service.StorageService;
+import com.alibaba.streamcompute.service.TiKVStorageService;
+import com.alibaba.streamcompute.tools.Constants;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -51,6 +54,59 @@ public class HBaseMain {
 
       String time_scan2 = sdm.format(new Date());
       System.out.println("scan ends" + time_scan2);
+    } else if (args[0].equals("load")) {
+      TiKVStorageService storageService = new TikvServiceImpl(Constants.PD_ADDRESS);
+
+      List<String> item_features = new ArrayList<>();
+      item_features.add("item_id");
+      item_features.add("item_expo_id");
+      item_features.add("item_category");
+      item_features.add("item_category_level1");
+      item_features.add("item_seller_city");
+      item_features.add("item_seller_prov");
+      item_features.add("item_purch_level");
+      item_features.add("item_gender");
+      item_features.add("item_buyer_age");
+      item_features.add("item_style_id");
+      item_features.add("item_material_id");
+      item_features.add("item_pay_class");
+      item_features.add("item_brand_id");
+      item_features.add("item__i_shop_id_ctr");
+      item_features.add("item__i_brand_id_ctr");
+      item_features.add("item__i_category_ctr");
+
+      List<String> user_features = new ArrayList<>();
+      user_features.add("user_id");
+      user_features.add("pred_gender");
+      user_features.add("pred_age_level");
+      user_features.add("pred_career_type");
+      user_features.add("pred_education_degree");
+      user_features.add("pred_baby_age");
+      user_features.add("pred_has_pet");
+      user_features.add("pred_has_car");
+      user_features.add("pred_life_stage");
+      user_features.add("pred_has_house");
+      user_features.add("os");
+
+      List<String> click_features = new ArrayList<>();
+      click_features.add("user_id");
+      click_features.add("item_id");
+      click_features.add("flag");
+      click_features.add("date");
+
+      switch (args[1]) {
+        case "item":
+          storageService.loadToTiKVFromHBase("item", item_features);
+          break;
+        case "user":
+          storageService.loadToTiKVFromHBase("user", user_features);
+          break;
+        case "click":
+          storageService.loadToTiKVFromHBase("click", click_features);
+          break;
+        default:
+          System.out.println("table " + args[1] + " doesn't support loadToTiKVFromHBase now.");
+      }
     }
   }
 }

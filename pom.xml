@@ -10,6 +10,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <flink.version>1.8.0</flink.version>
         <java.version>1.8</java.version>
         <scala.binary.version>2.11</scala.binary.version>
@@ -40,6 +41,20 @@
             <artifactId>flink-ml-tensorflow</artifactId>
             <version>${flink.ml.tensorflow.version}</version>
         </dependency>
+        <exclusions>        
+            <exclusion>     
+            <artifactId>grpc-stub</artifactId>      
+            <groupId>io.grpc</groupId>      
+            </exclusion>        
+            <exclusion>     
+            <artifactId>grpc-protobuf</artifactId>      
+            <groupId>io.grpc</groupId>      
+            </exclusion>        
+            <exclusion>     
+            <artifactId>grpc-netty</artifactId>     
+            <groupId>io.grpc</groupId>      
+            </exclusion>        
+        </exclusions>
         <dependency>
             <groupId>com.alibaba.flink.ml</groupId>
             <artifactId>flink-ml-pytorch</artifactId>
@@ -60,6 +75,14 @@
                     <groupId>io.grpc</groupId>
                     <artifactId>grpc-core</artifactId>
                 </exclusion>
+                <exclusion>     
+                    <artifactId>grpc-protobuf</artifactId>      
+                    <groupId>io.grpc</groupId>      
+                    </exclusion>        
+                    <exclusion>     
+                    <artifactId>grpc-netty</artifactId>     
+                    <groupId>io.grpc</groupId>      
+                    </exclusion>
             </exclusions>
         </dependency>
         <dependency>
@@ -84,6 +107,25 @@
             <artifactId>flink-table-planner_2.11</artifactId>
             <version>1.8.0</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.16</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.16</version>
+        </dependency>
+
+       <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-simple</artifactId>
+    	    <version>1.7.16</version>
+	</dependency>
+
 
         <dependency>
             <groupId>org.apache.hbase</groupId>
@@ -187,6 +229,22 @@
             <artifactId>testng</artifactId>
             <version>RELEASE</version>
             <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>io.opencensus</groupId>
+            <artifactId>opencensus-api</artifactId>
+            <version>0.24.0</version>
+            <exclusions>
+                <exclusion>
+                    <artifactId>grpc-context</artifactId>
+                    <groupId>io.grpc</groupId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>com.google.googlejavaformat</groupId>
+            <artifactId>google-java-format</artifactId>
+            <version>1.5</version>
         </dependency>
     </dependencies>
 

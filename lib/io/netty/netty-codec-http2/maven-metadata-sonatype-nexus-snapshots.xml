@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<metadata>
+  <groupId>io.netty</groupId>
+  <artifactId>netty-codec-http2</artifactId>
+  <versioning>
+    <latest>5.0.0.Alpha3-SNAPSHOT</latest>
+    <release></release>
+    <versions>
+      <version>4.1.10.Final-SNAPSHOT</version>
+      <version>4.1.11.Final-SNAPSHOT</version>
+      <version>4.1.12.Final-SNAPSHOT</version>
+      <version>4.1.13.Final-SNAPSHOT</version>
+      <version>4.1.14.Final-SNAPSHOT</version>
+      <version>4.1.15.Final-SNAPSHOT</version>
+      <version>4.1.16.Final-SNAPSHOT</version>
+      <version>4.1.17.Final-SNAPSHOT</version>
+      <version>4.1.18.Final-SNAPSHOT</version>
+      <version>4.1.19.Final-SNAPSHOT</version>
+      <version>4.1.20.Final-SNAPSHOT</version>
+      <version>4.1.21.Final-SNAPSHOT</version>
+      <version>4.1.22.Final-SNAPSHOT</version>
+      <version>4.1.23.Final-SNAPSHOT</version>
+      <version>4.1.24.Final-SNAPSHOT</version>
+      <version>4.1.25.Final-SNAPSHOT</version>
+      <version>4.1.26.Final-SNAPSHOT</version>
+      <version>4.1.27.Final-SNAPSHOT</version>
+      <version>4.1.28.Final-SNAPSHOT</version>
+      <version>4.1.29.Final-SNAPSHOT</version>
+      <version>4.1.30.Final-SNAPSHOT</version>
+      <version>4.1.31.Final-SNAPSHOT</version>
+      <version>4.1.32.Final-SNAPSHOT</version>
+      <version>4.1.33.Final-SNAPSHOT</version>
+      <version>4.1.34.Final-SNAPSHOT</version>
+      <version>4.1.35.Final-SNAPSHOT</version>
+      <version>4.1.36.Final-SNAPSHOT</version>
+      <version>4.1.37.Final-SNAPSHOT</version>
+      <version>4.1.38.Final-SNAPSHOT</version>
+      <version>4.1.39.Final-SNAPSHOT</version>
+      <version>4.1.40.Final-SNAPSHOT</version>
+      <version>5.0.0.Alpha3-SNAPSHOT</version>
+    </versions>
+    <lastUpdated>20190909191801</lastUpdated>
+  </versioning>
+</metadata>

@@ -771,7 +771,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
     }
 
     Connection connection = HBaseUtil.getHbaseConnection();
-    List<Result> results = (List<Result>) storageService.scanData("item", new ArrayList<>());
+    List<Result> results = (List<Result>) storageService.scanData(tableName, new ArrayList<>());
 
     // first decide the key format prefix
     ByteString tkey;
@@ -780,7 +780,7 @@ public class TikvServiceImpl implements TiKVStorageService, Serializable {
       tkey = ByteString.copyFromUtf8(String.format("%s#%s#", tableName + ",", "r" + ","));
       keyColumn = "user_id";
     } else if (tableName.equals("item")) {
-      tkey = ByteString.copyFromUtf8(String.format("%s#%s#%s", tableName + ",", "r" + ","));
+      tkey = ByteString.copyFromUtf8(String.format("%s#%s#", tableName + ",", "r" + ","));
       keyColumn = "item_id";
     } else if (tableName.equals("click")) {
       tkey = ByteString.copyFromUtf8(String.format("%s#%s#", tableName + ",", "r" + ","));
