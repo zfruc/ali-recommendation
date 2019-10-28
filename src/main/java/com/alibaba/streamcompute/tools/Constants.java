@@ -15,10 +15,10 @@ public class Constants {
   public static final String ZK_CONNECT = "zookeeper.connect";
   // public static final String ZOOKEEPER_QUORUM_VALUE =
   // "192.168.1.101,192.168.1.104,192.168.1.105,192.168.1.106";
-  public static final String ZOOKEEPER_QUORUM_VALUE = "localhost";
+  public static final String ZOOKEEPER_QUORUM_VALUE = "11.227.70.150,11.251.155.243,11.251.155.142";
   public static final String ZOOKEEPER_CLIENT_PORT_VALUE = "2181";
   public static final String MODEL_CKPT = "model.ckpt-1384";
-  public static final String PD_ADDRESS = "192.168.1.101:2379";
+  public static final String PD_ADDRESS = "11.251.158.237:2379";
   //  public static final String PD_ADDRESS = "127.0.0.1:2379";
   public static final String ROWID_MAX =
       "9999999999"; // in ByteString, 0 < 10 < 11 < 19 < 1 < 20 < 20 < 29. so 9 is the biggest

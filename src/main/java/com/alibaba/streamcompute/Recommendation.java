@@ -6,7 +6,6 @@ import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.client.TFUtils;
 import com.alibaba.flink.ml.util.MLConstants;
-//import com.alibaba.streamcompute.i2i.Recall;
 import com.alibaba.streamcompute.i2i.tikv.RecallFromTiKV;
 import com.alibaba.streamcompute.tools.Constants;
 import com.alibaba.streamcompute.tools.Util;
@@ -31,6 +30,8 @@ import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
 
+// import com.alibaba.streamcompute.i2i.Recall;
+
 public class Recommendation {
 
   public static void main(String[] args) throws Exception {
@@ -41,7 +42,8 @@ public class Recommendation {
         streamEnv.addSource(
             new FlinkKafkaConsumer011<>(
                 Constants.KAFKA_SOURCE_TOPIC, new SimpleStringSchema(), Util.getKafkaProPerties()));
-    DataStream<Tuple2<String, List<String>>> itemsStream = kafkaSourceStream.map(new RecallFromTiKV()::recall);
+    DataStream<Tuple2<String, List<String>>> itemsStream =
+        kafkaSourceStream.map(new RecallFromTiKV()::recall);
     DataStream<Row> samples =
         itemsStream
             .map(tuple -> new Predict().generateSample(tuple.f0, tuple.f1))

@@ -130,7 +130,7 @@
         <dependency>
             <groupId>org.apache.hbase</groupId>
             <artifactId>hbase-shaded-client</artifactId>
-            <version>1.4.9</version>
+            <version>2.0.0</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.apache.hadoop</groupId>
@@ -353,7 +353,7 @@
                                     <exclude>org.apache.directory.server:*</exclude>
                                     <exclude>org.apache.directory.api:*</exclude>
                                     <exclude>org.apache.logging.log4j:*</exclude>
-                                    <exclude>org.slf4j:*</exclude>
+                                    <!-- <exclude>org.slf4j:*</exclude> -->
                                     <exclude>com.aliyun:*</exclude>
                                     <exclude>com.aliyun.openservices:*</exclude>
                                     <exclude>org.apache.orc:*</exclude>

@@ -12,7 +12,7 @@ import org.tikv.kvproto.Kvrpcpb;
 
 public class TiKVMain {
   public static void main(String[] args) throws Exception {
-    SimpleDateFormat sdm = new SimpleDateFormat("yyyyÄêMMÔÂddÈÕ HHµã:mm·Ö:ss:Ãë");
+    SimpleDateFormat sdm = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     if (args[0].equals("itemput")) {
       String time_itemput1 = sdm.format(new Date());
       System.out.println("item put begins" + time_itemput1);
@@ -67,7 +67,8 @@ public class TiKVMain {
               + result.size()
               + "-------------------------------------");
       for (Kvrpcpb.KvPair item : result) {
-        System.out.println(item.getKey().toStringUtf8() + '\t' + item.getValue().toStringUtf8());
+        //        System.out.println(item.getKey().toStringUtf8() + '\t' +
+        // item.getValue().toStringUtf8());
       }
 
       String time_scan_click1 = sdm.format(new Date());

@@ -6,7 +6,6 @@ import com.alibaba.flink.ml.operator.util.TypeUtil;
 import com.alibaba.flink.ml.tensorflow.client.TFConfig;
 import com.alibaba.flink.ml.tensorflow.client.TFUtils;
 import com.alibaba.flink.ml.util.MLConstants;
-//import com.alibaba.streamcompute.i2i.Recall;
 import com.alibaba.streamcompute.i2i.tikv.RecallFromTiKV;
 import com.alibaba.streamcompute.tools.Constants;
 import com.alibaba.streamcompute.tools.Util;
@@ -27,6 +26,8 @@ import org.apache.flink.streaming.connectors.kafka.FlinkKafkaConsumer011;
 import org.apache.flink.table.api.Table;
 import org.apache.flink.table.api.java.StreamTableEnvironment;
 import org.apache.flink.types.Row;
+
+// import com.alibaba.streamcompute.i2i.Recall;
 
 public class RecommendationLocal {
 

@@ -183,3 +183,41 @@ create 'i2i', 'cf'
 ### 本地运行 RecommendationLocal.java
 
 - 运行com.alibaba.streamcompute.RecommendationLocal.java
+
+
+## 从HBase 灌数据到TiKV
+
+生成可执行的jar
+```
+mvn clean install
+```
+
+查看HBase中，user表，item表，click表的数据条目
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.HBaseMain scan
+```
+
+从HBase中加载item表到tikv
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.HBaseMain load item
+```
+
+加载user表到tikv
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.HBaseMain load user
+```
+
+加载click表到tikv
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.HBaseMain load click
+```
+
+查看tikv中user，item，click的条目
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.tikv.TiKVMain scan
+```
+
+删除tikv中user，item，click的全部数据
+```
+java -cp target/recommendation-1.0-SNAPSHOT.jar com.alibaba.streamcompute.data.tikv.TiKVMain deleteAll
+```

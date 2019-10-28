@@ -13,7 +13,7 @@ import org.apache.hadoop.hbase.client.*;
 
 public class HBaseMain {
   public static void main(String[] args) throws Exception {
-    SimpleDateFormat sdm = new SimpleDateFormat("yyyy-mm-dd");
+    SimpleDateFormat sdm = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
     if (args[0].equals("itemput")) {
       String time_itemput1 = sdm.format(new Date());
       System.out.println("item put begins: " + time_itemput1);
@@ -37,10 +37,10 @@ public class HBaseMain {
       WriteClickRecordToHbase.main(null);
 
       String time_clickput2 = sdm.format(new Date());
-      System.out.println("click put ends" + time_clickput2);
+      System.out.println("click put ends : " + time_clickput2);
     } else if (args[0].equals("scan")) {
       String time_scan1 = sdm.format(new Date());
-      System.out.println("scan begins: " + time_scan1);
+      System.out.println("scan begins : " + time_scan1);
 
       StorageService storageService = new HBaseServiceImpl();
       List<Result> results = (List<Result>) storageService.scanData("item", new ArrayList<>());
@@ -53,7 +53,7 @@ public class HBaseMain {
       System.out.println("click.size is : " + results.size());
 
       String time_scan2 = sdm.format(new Date());
-      System.out.println("scan ends" + time_scan2);
+      System.out.println("scan ends : " + time_scan2);
     } else if (args[0].equals("load")) {
       TiKVStorageService storageService = new TikvServiceImpl(Constants.PD_ADDRESS);
 
